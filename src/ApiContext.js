@@ -7,3 +7,4 @@ export default React.createContext({
   deleteNote: () => {},
   addFolder: () => {},
 });
+ 
