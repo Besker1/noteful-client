@@ -5,7 +5,7 @@ This is an app that can be used to keep track of your notes
  
  ## Built with Reactjs
  
- it's still in production might currently be down
+ it's still in production might currently be down,
  but feel free to check out the code
 ## Set up
 
