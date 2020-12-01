@@ -1,12 +1,18 @@
-import React from 'react';
-import './AddNote.css';
-import ApiContext from '../ApiContext';
-import cuid from 'cuid';
+import React from "react";
+import "./AddNote.css";
+import ApiContext from "../ApiContext";
+import cuid from "cuid";
+import PropTypes from "prop-types";
 
-export default class AppFolder extends React.Component {
+export default class AddNote extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', folderId: 'b0715efe-ffaf-11e8-8eb2-f2801f1b9fd1', content: '', error: false };
+    this.state = {
+      name: "",
+      folderId: "b0715efe-ffaf-11e8-8eb2-f2801f1b9fd1",
+      content: "",
+      error: false,
+    };
   }
 
   static contextType = ApiContext;
@@ -19,18 +25,23 @@ export default class AppFolder extends React.Component {
 
   postFormToApi = (obj) => {
     const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     const urlencoded = new URLSearchParams();
-    urlencoded.append('id', `${cuid()}`);
-    urlencoded.append('name', `${obj.name}`);
-    urlencoded.append('modified', `${new Date().toISOString()}`);
-    urlencoded.append('folderId', `${obj.folderId}`);
-    urlencoded.append('content', `${obj.content}`);
+    urlencoded.append("id", `${cuid()}`);
+    urlencoded.append("name", `${obj.name}`);
+    urlencoded.append("modified", `${new Date().toISOString()}`);
+    urlencoded.append("folderId", `${obj.folderId}`);
+    urlencoded.append("content", `${obj.content}`);
 
-    const requestOptions = { method: 'POST', headers: myHeaders, body: urlencoded, redirect: 'follow' };
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
 
-    fetch('http://localhost:9090/notes/', requestOptions)
+    fetch("http://localhost:9090/notes/", requestOptions)
       .then((res) => {
         if (!res.ok) return res.json().then((e) => Promise.reject(e));
         return res.json();
@@ -50,12 +61,15 @@ export default class AppFolder extends React.Component {
   };
 
   validateForm = () => {
-    if ((!this.state.name || this.state.name === '') && (!this.state.content || this.state.content === '')) {
-      return 'Note name and content must be completed!';
-    } else if (!this.state.name || this.state.name === '') {
-      return 'Note name must be completed!';
-    } else if (!this.state.content || this.state.content === '') {
-      return 'Note content must be completed!';
+    if (
+      (!this.state.name || this.state.name === "") &&
+      (!this.state.content || this.state.content === "")
+    ) {
+      return "Note name and content must be completed!";
+    } else if (!this.state.name || this.state.name === "") {
+      return "Note name must be completed!";
+    } else if (!this.state.content || this.state.content === "") {
+      return "Note content must be completed!";
     }
   };
 
@@ -68,41 +82,89 @@ export default class AppFolder extends React.Component {
       );
     });
     return (
-      <div className='add-note-form'>
-        <h2 className='add-form-title'>Add Note</h2>
-        <form className='form-body' onSubmit={!this.state.name || this.state.name === '' || (!this.state.content || this.state.content === '') ? this.formErrorState : this.handleSubmit}>
-          <div className='form-div'>
+      <div className="add-note-form">
+        <h2 className="add-form-title">Add Note</h2>
+        <form
+          className="form-body"
+          onSubmit={
+            !this.state.name ||
+            this.state.name === "" ||
+            (!this.state.content || this.state.content === "")
+              ? this.formErrorState
+              : this.handleSubmit
+          }
+        >
+          <div className="form-div">
             <label>
               Note Name
               <div>
-                <input className='note-submit-inputs' value={this.state.name} type='text' name='notename' onChange={(event) => this.setState({ name: event.target.value })} />
+                <input
+                  className="note-submit-inputs"
+                  value={this.state.name}
+                  type="text"
+                  name="notename"
+                  onChange={(event) =>
+                    this.setState({ name: event.target.value })
+                  }
+                />
               </div>
             </label>
           </div>
-          <div className='form-div'>
+          <div className="form-div">
             <label>
               Folder
               <div>
-                <select value={this.state.folderId} name='notefolder' onChange={(event) => this.setState({ folderId: event.target.value })}>
+                <select
+                  value={this.state.folderId}
+                  name="notefolder"
+                  onChange={(event) =>
+                    this.setState({ folderId: event.target.value })
+                  }
+                >
                   {options}
                 </select>
               </div>
             </label>
           </div>
-          <div className='form-div'>
+          <div className="form-div">
             <label>
               Note Content
               <div>
-                <textarea className='note-submit-content' value={this.state.content} onChange={(event) => this.setState({ content: event.target.value })} />
+                <textarea
+                  className="note-submit-content"
+                  value={this.state.content}
+                  onChange={(event) =>
+                    this.setState({ content: event.target.value })
+                  }
+                />
               </div>
             </label>
           </div>
-          <div className='note-submit-button'>
-            <input type='submit' value='Submit' />
+          <div className="note-submit-button">
+            <input type="submit" value="Submit" />
           </div>
-          {this.state.error && <p className='error-text'>{this.validateForm()}</p>}
+          {this.state.error && (
+            <p className="error-text">{this.validateForm()}</p>
+          )}
         </form>
       </div>
     );
   }
 }
+
+AddNote.propTypes = {
+  store: PropTypes.object.isRequired,
+  history: PropTypes.object,
+  context: PropTypes.shape({
+    match: PropTypes.object,
+    folders: PropTypes.object,
+  }),
+};
+
+AddNote.defaultProps = {
+  history: {},
+  context: {
+    match: {},
+    folders: {},
+  },
+};
