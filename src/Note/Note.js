@@ -1,10 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ApiContext from '../ApiContext';
-import config from '../config';
-import './Note.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ApiContext from "../ApiContext";
+import config from "../config";
+import "./Note.css";
+import propTypes from "prop-types";
 
 export default class Note extends React.Component {
   static defaultProps = {
@@ -17,9 +18,9 @@ export default class Note extends React.Component {
     const noteId = this.props.id;
 
     fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
       },
     })
       .then((res) => {
@@ -39,19 +40,30 @@ export default class Note extends React.Component {
   render() {
     const { name, id, modified } = this.props;
     return (
-      <div className='Note'>
-        <h2 className='Note__title'>
+      <div className="Note">
+        <h2 className="Note__title">
           <Link to={`/note/${id}`}>{name}</Link>
         </h2>
-        <button className='Note__delete' type='button' onClick={this.handleClickDelete}>
-          <FontAwesomeIcon icon='trash-alt' /> remove
+        <button
+          className="Note__delete"
+          type="button"
+          onClick={this.handleClickDelete}
+        >
+          <FontAwesomeIcon icon="trash-alt" /> remove
         </button>
-        <div className='Note__dates'>
-          <div className='Note__dates-modified'>
-            Modified <span className='Date'>{format(modified, 'Do MMM YYYY')}</span>
+        <div className="Note__dates">
+          <div className="Note__dates-modified">
+            Modified{" "}
+            <span className="Date">{format(modified, "Do MMM YYYY")}</span>
           </div>
         </div>
       </div>
     );
   }
 }
+
+Note.propTypes = {
+  name: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
+  modified: propTypes.object.isRequired,
+};
