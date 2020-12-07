@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React from "react";
+import propTypes from "prop-types";
 export default class ErrorPage extends React.Component {
   state = { error: null };
   static getDerivedStateFromError(error) {
@@ -9,7 +9,7 @@ export default class ErrorPage extends React.Component {
   render() {
     if (this.state.error) {
       return (
-        <main className='error-page'>
+        <main className="error-page">
           <h1>Something seems to have gone wrong</h1>
           <p>Try refreshing the page</p>
         </main>
@@ -18,3 +18,7 @@ export default class ErrorPage extends React.Component {
     return this.props.children;
   }
 }
+
+ErrorPage.propTypes = {
+  props: propTypes.object,
+};
