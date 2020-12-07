@@ -86,7 +86,6 @@ export default class AppFolder extends React.Component {
 }
 
 AppFolder.propTypes = {
-  store: PropTypes.object.isRequired,
   history: PropTypes.object,
 };
 

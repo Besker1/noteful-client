@@ -153,12 +153,7 @@ export default class AddNote extends React.Component {
 }
 
 AddNote.propTypes = {
-  store: PropTypes.object.isRequired,
   history: PropTypes.object,
-  context: PropTypes.shape({
-    match: PropTypes.object,
-    folders: PropTypes.object,
-  }),
 };
 
 AddNote.defaultProps = {
